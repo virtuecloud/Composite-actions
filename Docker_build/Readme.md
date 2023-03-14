@@ -11,8 +11,8 @@
 
 - [Introduction](#introduction)
 - [Features](#features)
-
-
+- [Inputs](#inputs)
+- [Usage](#usage)
 
 ## Introduction
 
@@ -36,3 +36,19 @@ Some functionalities that this actions offers are:
 |IMAGE_VERSION|false| |
 |BUILD_ARGUMENT|false| |
 |ARGUMENT_VALUE|false| |
+
+
+## Usage
+
+```yaml
+- name: Docker build
+        uses: virtuecloud/Composite_actions/Docker_build@main
+        with:
+             FILE_LOCATION: ${{github.event.inputs.FILE_LOCATION}}
+             IMAGE_TAG: ${{github.event.inputs.IMAGE_TAG}}
+             IMAGE_VERSION: ${{github.event.inputs.IMAGE_VERSION}}
+             BUILD_ARGUMENT: ${{github.event.inputs.BUILD_ARGUMENT}}
+             ARGUMENT_VALUE: ${{github.event.inputs.ARGUMENT_VALUE}}
+             
+```
+
