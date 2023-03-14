@@ -13,6 +13,7 @@
 - [Features](#features)
 - [Inputs](#inputs)
 - [Usage](#usage)
+- [Example](#example)
 
 ## Introduction
 
@@ -44,11 +45,52 @@ Some functionalities that this actions offers are:
 - name: Docker build
         uses: virtuecloud/Composite_actions/Docker_build@main
         with:
-             FILE_LOCATION: ${{github.event.inputs.FILE_LOCATION}}
-             IMAGE_TAG: ${{github.event.inputs.IMAGE_TAG}}
-             IMAGE_VERSION: ${{github.event.inputs.IMAGE_VERSION}}
-             BUILD_ARGUMENT: ${{github.event.inputs.BUILD_ARGUMENT}}
-             ARGUMENT_VALUE: ${{github.event.inputs.ARGUMENT_VALUE}}
+             FILE_LOCATION: ${{github.event.inputs.FILE_LOCATION}} # Or the value which you want
+             IMAGE_TAG: ${{github.event.inputs.IMAGE_TAG}} # Or the value which you want
+             IMAGE_VERSION: ${{github.event.inputs.IMAGE_VERSION}} # Or the value which you want
+             BUILD_ARGUMENT: ${{github.event.inputs.BUILD_ARGUMENT}} # Or the value which you want
+             ARGUMENT_VALUE: ${{github.event.inputs.ARGUMENT_VALUE}} # Or the value which you want
              
 ```
 
+
+
+## Example Workflow Usage
+
+```yaml
+name: Docker workflow
+
+on:
+  workflow_call:
+    inputs:
+      FILE_LOCATION:
+        type: string
+        required: false
+      IMAGE_TAG:
+        type: string
+        required: true
+      IMAGE_VERSION:
+        type: string
+        required: false
+      BUILD_ARGUMENT:
+        type: string
+        required: false
+      ARGUMENT_VALUE:
+        type: string
+        required: false
+jobs:
+  build-test:
+    runs-on: ubuntu-20.04
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Docker build
+        uses: virtuecloud/Composite_actions/Docker_build@main
+        with:
+             FILE_LOCATION: ${{github.event.inputs.FILE_LOCATION}} # Or the value which you want
+             IMAGE_TAG: ${{github.event.inputs.IMAGE_TAG}} # Or the value which you want
+             IMAGE_VERSION: ${{github.event.inputs.IMAGE_VERSION}} # Or the value which you want
+             BUILD_ARGUMENT: ${{github.event.inputs.BUILD_ARGUMENT}} # Or the value which you want
+             ARGUMENT_VALUE: ${{github.event.inputs.ARGUMENT_VALUE}} # Or the value which you want
+
+```
