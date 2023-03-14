@@ -1,10 +1,10 @@
-name: 'Custom GitHub Action'
+name: 'Python Build Action'
 description: 'A GitHub Action that builds python'
 
 
 inputs:
   file:
-    description: 'name of python file'
+    description: 'path of python file'
     required: true
     
 runs:
@@ -13,6 +13,6 @@ runs:
     - name: Install Dependencies
       run: pip install -r requirements.txt
       shell: bash
-    - name: Find the file
+    - name: Run the file
       run: python "${{ inputs.file }}"
       shell: bash
