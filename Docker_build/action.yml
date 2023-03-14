@@ -5,13 +5,10 @@ inputs:
   FILE_LOCATION:
     description: 'file path of Dockerfile'
     required: false
-    default: Dockerfile
+    default: .
   # FILE_NAME:
   #   description: 'Dockerfile name'
   #   required: true
-  IMAGE_NAME:
-    description: 'Image name'
-    required: true
   IMAGE_TAG:
     description: 'Tag for image to build'
     required: true
@@ -19,11 +16,14 @@ inputs:
     description: 'Additional tag for the image'
     required: false
   BUILD_ARGUMENT:
-    description: 'Build time arguments'
+    description: 'Build argument key'
+    required: false
+  ARGUMENT_VALUE:
+    description: 'Build argument value'
     required: false
 runs:
   using: "composite"
   steps:
     - name: Docker build actions
-      run: docker build -t ${{ inputs.IMAGE_TAG }} -t ${{ inputs.IMAGE_VERSION }} --build-arg ${{ inputs.BUILD_ARGUMENT }} ${{ inputs.FILE_LOCATION }}
+      run: docker build -t ${{ inputs.IMAGE_TAG }} -t ${{ inputs.IMAGE_VERSION }} --build-arg ${{ inputs.BUILD_ARGUMENT }}=${{ inputs.ARGUMENT_VALUE }} ${{ inputs.FILE_LOCATION }}
       shell: bash

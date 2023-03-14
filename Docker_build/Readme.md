@@ -32,3 +32,7 @@ Some functionalities that this actions offers are:
 | Inputs  | Required | Default |
 |---------|----------|---------|
 |FILE_LOCATION|false|.|
+|IMAGE_TAG|true| |
+|IMAGE_VERSION|false| |
+|BUILD_ARGUMENT|false| |
+|ARGUMENT_VALUE|false| |
