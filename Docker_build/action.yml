@@ -2,8 +2,8 @@ name: Docker build action
 description: 'This action is to perform docker build command for building image'
 
 inputs:
-  DIRECTORY:
-    description: 'Directory path of Dockerfile'
+  FILE_LOCATION:
+    description: 'file path of Dockerfile'
     required: false
     default: Dockerfile
   # FILE_NAME:
@@ -25,5 +25,5 @@ runs:
   using: "composite"
   steps:
     - name: Docker build actions
-      run: docker build -t ${{ inputs.IMAGE_TAG }} -t ${{ inputs.IMAGE_VERSION }} --build-arg ${{ inputs.BUILD_ARGUMENT }} ${{ inputs.DIRECTORY }}
+      run: docker build -t ${{ inputs.IMAGE_TAG }} -t ${{ inputs.IMAGE_VERSION }} --build-arg ${{ inputs.BUILD_ARGUMENT }} ${{ inputs.FILE_LOCATION }}
       shell: bash

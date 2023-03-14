@@ -20,10 +20,15 @@ This is a composite action is built for perfoming docker build operation on the 
 
 ## Features
 
-The functionalities that this actions offers are:
+Some functionalities that this actions offers are:
 
-* Give custom tags to the image that you are building with the help of this action
-* Communicate on your issue and pull request conversations
-* Close or lock issues
-* Apply labels and assignees
-* Review and merge pull requests
+* Give custom tags to the image that you are building with the help of this action.
+* Configurable file location for Dockerfile.
+* Custom build arguments for passing build time variables.
+
+
+## Inputs
+
+| Inputs  | Required | Default |
+|---------|----------|---------|
+|FILE_LOCATION|false|.|
