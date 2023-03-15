@@ -61,23 +61,23 @@ Some functionalities that this actions offers are:
 name: Docker workflow
 
 on:
-  workflow_call:
-    inputs:
-      FILE_LOCATION:
-        type: string
-        required: false
-      IMAGE_TAG:
-        type: string
-        required: true
-      IMAGE_VERSION:
-        type: string
-        required: false
-      BUILD_ARGUMENT:
-        type: string
-        required: false
-      ARGUMENT_VALUE:
-        type: string
-        required: false
+  workflow_dispatch:
+  inputs:
+  file_location:
+    required: false
+    default: .
+  image_tag:
+    required: true
+  image_version:
+    required: false
+  build_argument:
+    required: false
+  argument_value:
+    required: false
+  container_registry:
+    required: false
+  repository_name:
+    required: true
 jobs:
   build-test:
     runs-on: ubuntu-20.04
@@ -87,10 +87,13 @@ jobs:
       - name: Docker build
         uses: virtuecloud/Composite_actions/Docker_build@main
         with:
-             FILE_LOCATION: ${{github.event.inputs.FILE_LOCATION}} # Or the value which you want
-             IMAGE_TAG: ${{github.event.inputs.IMAGE_TAG}} # Or the value which you want
-             IMAGE_VERSION: ${{github.event.inputs.IMAGE_VERSION}} # Or the value which you want
-             BUILD_ARGUMENT: ${{github.event.inputs.BUILD_ARGUMENT}} # Or the value which you want
-             ARGUMENT_VALUE: ${{github.event.inputs.ARGUMENT_VALUE}} # Or the value which you want
+             file_location: ${{github.event.inputs.file_location}} 
+             image_tag: ${{github.event.inputs.image_tag}} 
+             image_version: ${{github.event.inputs.image_version}} 
+             build_argument: ${{github.event.inputs.build_argument}} 
+             argument_value: ${{github.event.inputs.argument_value}}
+             container_registry: ${{github.event.inputs.container_registry}}
+             repository_name: ${{github.event.inputs.repository_name}}
 
+  # Note: The inputs mentioned in this workflow can be changes as per the need of the requirement
 ```

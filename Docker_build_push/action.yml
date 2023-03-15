@@ -1,0 +1,41 @@
+name: Docker build action
+description: 'This action is to perform docker build command for building image'
+
+inputs:
+  file_location:
+    description: 'File path of Dockerfile'
+    required: false
+    default: .
+  # FILE_NAME:
+  #   description: 'Dockerfile name'
+  #   required: true
+  image_tag:
+    description: 'Tag for image to build'
+    required: true
+  image_version:
+    description: 'Additional tag for the image'
+    required: false
+  build_argument:
+    description: 'Build argument key'
+    required: false
+  argument_value:
+    description: 'Build argument value'
+    required: false
+  container_registry:
+    description: 'container registry'
+    default: 'registry.hub.docker.com'
+    required: false
+  repository_name:
+    description: 'Repository name to push image to'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Docker build actions
+      if: ${{ inputs.push == true }}
+      run: docker build -t ${{ inputs.image_tag }} -t ${{ inputs.image_version }} -t ${{ inputs.container_registry }}/${{ inputs.repository_name }} --build-arg ${{ inputs.build_argument }}=${{ inputs.argument_value }} ${{ inputs.file_location }}
+      shell: bash
+    - name:  Push image to docker
+      run: docker push --all-tags ${{ inputs.container_registry }}/${{ inputs.repository_name }}
+      shell: bash
+    
