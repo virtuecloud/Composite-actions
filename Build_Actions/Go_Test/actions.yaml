@@ -1,0 +1,13 @@
+name: 'Go Test '
+description: 'A GitHub Action that test Go Application Test Cases'
+
+inputs: 
+  TEST_PATH:
+    description: 'Path of test cases'
+    required: true
+    
+runs:
+  using: 'composite'
+  steps:    
+  - name: Testing the build
+    run: go test -v ${{ inputs.TEST_PATH }}
