@@ -1,0 +1,32 @@
+name: 'Go Build '
+description: 'A GitHub Action that builds Go Application'
+
+inputs:  
+  DEPENDENCY_REQUIRED:
+    description: 'Want to install any dependency'
+  DEPENDENCY_NAME:
+    description: 'Dependency required to be installed'
+    required: false
+  BUILD_PATH:
+    description: 'Path of go app'
+    required: true
+  TEST_PATH:
+    description: 'Path of test cases'
+    required: true
+    
+runs:
+  using: 'composite'
+  steps:
+   - name: Install dependencies
+     if: ${{ inputs.DEPENDENCY_REQUIRED == true }}
+     run:  go install ${{ inputs.DEPENDENCY_NAME }}
+     
+   - name: updates module dependencies
+     run: go get -d ${{ inputs.BUILD_PATH 
+     
+   - name: Run build
+     run: run build ${{ inputs.BUILD_PATH }}
+  
+  - name: Testing the build
+    run: go test -v ${{ inputs.TEST_PATH }}
+  
