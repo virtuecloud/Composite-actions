@@ -18,11 +18,14 @@ runs:
    - name: Install dependencies
      if: ${{ inputs.DEPENDENCY_REQUIRED == true }}
      run:  go install ${{ inputs.DEPENDENCY_NAME }}
+     shell: bash
      
    - name: updates module dependencies
      run: go get -d ${{ inputs.BUILD_PATH }}
+     shell: bash
      
    - name: Run build
      run: go build ${{ inputs.BUILD_PATH }}
+     shell: bash
   
   
