@@ -1,4 +1,4 @@
-name: 'Go Build '
+name: 'Go Build'
 description: 'A GitHub Action that builds Go Application'
 
 inputs:  
@@ -10,9 +10,7 @@ inputs:
   BUILD_PATH:
     description: 'Path of go app'
     required: true
-  TEST_PATH:
-    description: 'Path of test cases'
-    required: true
+
     
 runs:
   using: 'composite'
