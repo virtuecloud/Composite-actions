@@ -5,5 +5,5 @@ runs:
   using: "composite"
   steps:
     - name: Terraform Apply
-      run: terraform apply -auto-approve
+      run: terraform apply -auto-approve -input=false
       shell: bash
