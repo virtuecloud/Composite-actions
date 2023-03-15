@@ -1,0 +1,9 @@
+name: 'Terraform Plan destroy'
+description: 'Terraform Composite action for terrafrom plan destroy'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Terraform Plan destroy
+      run: terraform plan -destroy
+      shell: bash

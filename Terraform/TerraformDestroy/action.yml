@@ -1,0 +1,9 @@
+name: 'Terraform destroy'
+description: 'Terraform Composite action for terrafrom destroy'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
+      shell: bash

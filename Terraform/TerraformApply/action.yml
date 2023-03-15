@@ -1,0 +1,9 @@
+name: 'Terraform Apply'
+description: 'Terraform Composite action for terrafrom apply'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
+      shell: bash

@@ -1,0 +1,9 @@
+name: 'Terraform Plan'
+description: 'Terraform Compoite action for terraform plan'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Terraform Plan
+      run: terraform plan
+      shell: bash

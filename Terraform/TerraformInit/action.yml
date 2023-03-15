@@ -1,0 +1,32 @@
+name: 'Terraform Init'
+description: 'Terraform Composite action for terrafrom init'
+
+inputs:  
+  ENVIRONMENT:
+    description: 'environment name'
+    required: true
+  STATE_BUCKET:
+    description: 'backend state management bucket'
+    required: true
+  STATE_KEY:
+    description: 'backend state management file key'
+    required: true
+  REGION:
+    description: 'backend state management bucket region'
+    required: true
+  STATE_LOCK:
+    description: 'toogle for state lock'
+  STATE_LOCK_TABLE:
+    description: 'dynamo db state lock table name'
+    required: false
+runs:
+  using: "composite"
+  steps:
+    - name: Terraform Init with state lock
+      if: ${{ inputs.STATE_LOCK == true }}
+      run: terraform init -backend-config="bucket=${{ inputs.STATE_BUCKET }}" -backend-config="key=${{ inputs.STATE_KEY }}" -backend-config="region=${{ inputs.REGION }}" -backend-config="dynamodb_table=${{ inputs.STATE_LOCK_TABLE }}" && terraform workspace new ${{ inputs.ENVIRONMENT }} || terraform workspace select ${{ inputs.ENVIRONMENT }}
+      shell: bash
+    - name: Terraform Init without state lock
+      if: ${{ inputs.STATE_LOCK == false }}
+      run: terraform init -backend-config="bucket=${{ inputs.STATE_BUCKET }}" -backend-config="key=${{ inputs.STATE_KEY }}" -backend-config="region=${{ inputs.REGION }}" && terraform workspace new ${{ inputs.ENVIRONMENT }} || terraform workspace select ${{ inputs.ENVIRONMENT }}
+      shell: bash
