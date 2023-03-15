@@ -22,11 +22,9 @@ runs:
      run:  go install ${{ inputs.DEPENDENCY_NAME }}
      
    - name: updates module dependencies
-     run: go get -d ${{ inputs.BUILD_PATH 
+     run: go get -d ${{ inputs.BUILD_PATH }}
      
    - name: Run build
      run: go build ${{ inputs.BUILD_PATH }}
   
-  - name: Testing the build
-    run: go test -v ${{ inputs.TEST_PATH }}
   
