@@ -13,5 +13,5 @@ runs:
   using: "composite"
   steps:
     - name: Run the script
-      run: bash ${{inputs.FILENAME }} ${{CLIENTNAME}}
+      run: bash ${{inputs.FILENAME }} ${{ inputs.CLIENTNAME }}
       shell: bash
