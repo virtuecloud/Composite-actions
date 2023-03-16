@@ -1,0 +1,17 @@
+name: 'Running Shell Script'
+description: 'Composite action for running the shell script'
+
+inputs:  
+  FILENAME:
+    description: 'name of file to run'
+    required: true
+  CLIENTNAME:
+    description: 'Name of client to use'
+    required: true
+  
+runs:
+  using: "composite"
+  steps:
+    - name: Run the script
+      run: bash ${{inputs.FILENAME }} ${{CLIENTNAME}}
+      shell: bash
