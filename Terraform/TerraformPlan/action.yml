@@ -5,5 +5,5 @@ runs:
   using: "composite"
   steps:
     - name: Terraform Plan
-      run: terraform plan -input=false -no-color
+      run: terraform plan -no-color
       shell: bash
