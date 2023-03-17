@@ -24,7 +24,7 @@ runs:
   steps:
     - name: Terraform Init with state lock
 #       if: ${{ inputs.STATE_LOCK == true }}
-      run: terraform init -backend-config="bucket=${{ inputs.STATE_BUCKET }}" -backend-config="key=${{ inputs.STATE_KEY }}" -backend-config="region=${{ inputs.REGION }}" -backend-config="dynamodb_table=${{ inputs.STATE_LOCK_TABLE }}" && terraform workspace new ${{ inputs.ENVIRONMENT }} || terraform workspace select ${{ inputs.ENVIRONMENT }}
+      run: terraform init -backend-config="bucket=${{ inputs.STATE_BUCKET }}" -backend-config="key=${{ inputs.STATE_KEY }}" -backend-config="region=${{ inputs.REGION }}" -backend-config="dynamodb_table=${{ inputs.STATE_LOCK_TABLE }}" && terraform workspace select -or-create ${{ inputs.ENVIRONMENT }}
       shell: bash
 #     - name: Terraform Init without state lock
 #       if: ${{ inputs.STATE_LOCK == false }}
