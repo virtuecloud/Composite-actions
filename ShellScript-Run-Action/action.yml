@@ -5,13 +5,10 @@ inputs:
   FILENAME:
     description: 'name of file to run'
     required: true
-  CLIENTNAME:
-    description: 'Name of client to use'
-    required: true
   
 runs:
   using: "composite"
   steps:
     - name: Run the script
-      run: bash ${{inputs.FILENAME }} ${{ inputs.CLIENTNAME }}
+      run: bash ${{inputs.FILENAME }}
       shell: bash
