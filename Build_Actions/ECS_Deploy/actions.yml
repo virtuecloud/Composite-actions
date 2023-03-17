@@ -1,0 +1,27 @@
+
+name: ECS deploy action
+description: 'This action is to perform ecs deployment'
+
+inputs:
+  CLUSTER_NAME:
+    description: 'Name of the cluster'
+    required: true
+  TASKDEF_NAME:
+    description: 'Name of the task defination'
+    required: true
+  SERVICE_NAME:
+     description: 'Service name'
+     required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Docker build actions
+      run: |
+          sudo apt-get install jq -y
+          jq --version
+          aws ecs describe-task-definition --task-definition ${{ inputs.TASKDEF_NAME }} > task-def.json
+          jq .taskDefinition task-def.json > taskdefinition.json
+          jq 'del(.taskDefinitionArn)' taskdefinition.json | jq 'del(.revision)' | jq 'del(.status)' | jq 'del(.requiresAttributes)' | jq 'del(.compatibilities)' | jq 'del(.registeredAt)'| jq 'del(.registeredBy)' > container-definition.json
+          aws ecs register-task-definition --cli-input-json file://container-definition.json  
+          aws ecs update-service --cluster  ${{ inputs.CLUSTER_NAME }} --service  ${{ inputs.SERVICE_NAME }} --task-definition  ${{ inputs.TASKDEF_NAME }}      
+      shell: bash
