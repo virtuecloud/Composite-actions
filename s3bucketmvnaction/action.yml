@@ -1,0 +1,16 @@
+name: s3bucket_mvn_action
+description: 'bucket name'
+inputs:
+  bucket_name:
+    description: 'bucket name'
+    required: true
+
+  jar_file_name:
+    description: 'jar file name'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - run: aws s3 cp /target/${{inputs.jar_file_name}}.jar s3://${{inputs.bucket_name}}/
+      shell: bash
