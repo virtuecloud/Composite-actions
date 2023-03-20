@@ -1,0 +1,45 @@
+# Name of workflow as seen in Github actions tab
+name: dev-build-and-deploy
+# Run workflow only on push to dev branch
+on: 
+  workflow_call:
+    inputs: 
+      bucket_name:
+        required: true
+        type: string
+         
+    secrets:
+      AWS_ACCESS_KEY:
+        required: true
+
+      AWS_SECRET_ACCESS:
+        required: true
+
+    
+     
+jobs:
+  # To build the project
+  build-tambola:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checking out code
+        uses: actions/checkout@v3
+      - name: Installing Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - name: Installing dependencies
+        uses: sarvesh5012/hello-composite-actions/npm_run@main
+        
+#       - name: Building project
+#         run: npm run build
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS }}
+          aws-region: us-west-1
+      - name: Copy files to the production website with the AWS CLI
+        uses: sarvesh5012/hello-composite-actions/s3bucketaction@main
+        with:
+          bucket_name: ${{inputs.bucket_name}}
