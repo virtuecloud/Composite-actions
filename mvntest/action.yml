@@ -4,4 +4,6 @@ description: 'Maven'
 runs:
   using: "composite"
   steps:
-    - run: mvn clean install
+    - name: mvn clean install
+      run: mvn clean install
+      shell: bash

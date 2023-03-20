@@ -12,5 +12,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - run: aws s3 cp /target/${{inputs.jar_file_name}}.jar s3://${{inputs.bucket_name}}/
+    - name: s3 Bucket Push
+      run: aws s3 cp /target/${{inputs.jar_file_name}}.jar s3://${{inputs.bucket_name}}/
       shell: bash
