@@ -23,5 +23,5 @@ runs:
   using: "composite"
   steps:
     - name: ec2 deploy actions
-      run: aws ssm send-command --document-name "AWS-RunRemoteScript" --instance-ids "inputs.INSTANCE_ID" --parameters '{"sourceType":["S3"],"sourceInfo":["{\"path\":\"https://inputs.BUCKET_NAME.s3.inputs.BUCKET_REGION.amazonaws.com\"}"],"commandLine":["sudo bash inputs.FILE"],"workingDirectory":["inputs.WORKDIR"]}'     
+      run: aws ssm send-command --document-name "AWS-RunRemoteScript" --instance-ids "${{ inputs.INSTANCE_ID }}" --parameters '{"sourceType":["S3"],"sourceInfo":["{\"path\":\"https://${{ inputs.BUCKET_NAME }}.s3.${{ inputs.BUCKET_REGION }}.amazonaws.com\"}"],"commandLine":["sudo bash ${{ inputs.FILE }}"],"workingDirectory":["${{ inputs.WORKDIR }}"]}'     
       shell: bash  
