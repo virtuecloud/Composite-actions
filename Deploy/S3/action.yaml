@@ -13,3 +13,4 @@ runs:
   steps:
     - name: s3 deploy action
       run: aws s3 sync ${{ inputs.PATH }} s3://${{ inputs.BUCKET_NAME }} --delete
+      shell: bash
