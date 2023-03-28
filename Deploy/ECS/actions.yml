@@ -15,7 +15,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Docker build actions
+    - name: ecs deploy action
       run: |
           sudo apt-get install jq -y
           jq --version
