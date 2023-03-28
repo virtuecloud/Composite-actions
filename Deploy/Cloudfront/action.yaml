@@ -10,3 +10,4 @@ runs:
   steps:
     - name: ecs deploy action
       run: aws cloudfront create-invalidation --distribution-id ${{ inputs.AWS_DISTRIBUTION_ID }} --paths "/*"
+      shell: bash
