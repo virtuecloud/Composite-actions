@@ -1,0 +1,15 @@
+name: S3 deploy action
+description: 'This action is to perform deployment to S3'
+
+inputs:
+  BUCKET_NAME:
+    description: 'Name of the bucket on which we want to deploy'
+    required: true
+  PATH:
+    description: 'path of folder or file to be deployed'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: s3 deploy action
+      run: aws s3 sync ${{ inputs.PATH }} s3://${{ inputs.BUCKET_NAME }} --delete
