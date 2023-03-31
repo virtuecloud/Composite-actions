@@ -13,3 +13,4 @@ runs:
   
    - name: Run the file
      run: python3 ${{ inputs.FILENAME }}
+     shell: bash
