@@ -34,7 +34,7 @@ runs:
       - name: Update lambda function code
         run: aws lambda update-function-code --function-name ${{ inputs.FUNCTION_NAME }} --s3-bucket ${{ inputs.BUCKET_NAME }} ${{ inputs.FUNCTION_ZIP_FILE }}
         
-     - name: zip the dependency
+      - name: zip the dependency
         working-directory: ${{ inputs.DIR_NAME }}
         run: zip -r ${{ inputs.LAYER_ZIP_FILE }} *
         
@@ -46,11 +46,11 @@ runs:
         run: |
           echo "LayerVersionArn=$(aws lambda publish-layer-version --layer-name ${{ inputs.LAYER_NAME }} --content S3Bucket=${{ inputs.BUCKET_NAME }},S3Key=${{ inputs.LAYER_ZIP_FILE }} --query 'LayerVersionArn')" >> $GITHUB_OUTPUT
         id: layerversion
-        
-        
+     
       - name: update lambda function layer
         run: |
             echo "${{steps.layerversion.outputs.LayerVersionArn}}"
             aws lambda update-function-configuration --function-name ${{ inputs.FUNCTION_NAME }} --layers "${{steps.layerversion.outputs.LayerVersionArn}}"
-
-        
+      
+      - name: Test the function
+        run: aws lambda invoke --function-name ${{ inputs.FUNCTION_NAME }} output.json     
