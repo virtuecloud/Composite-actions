@@ -49,17 +49,17 @@ runs:
   steps:
     - name: Docker build actions
       run: | 
-            export REGION=`aws configure get region`
-            export ACCOUNT=`aws sts get-caller-identity --query 'Account' --output text`
-            if [ ${{ inputs.docker_registry == 'true' }} ]
-            then
-               docker build -t ${{ inputs.docker_username }}/${{ inputs.repository_name }}:${{ inputs.image_tag }} -t ${{ inputs.docker_username }}/${{ inputs.repository_name }}:${{ inputs.image_version }} --build-arg ${{ inputs.build_argument }}=${{ inputs.argument_value }} ${{ inputs.file_location }}
-               docker login -u="${{ inputs.docker_username }}"" -p="${{ inputs.docker_passwd }}"
-               docker push --all-tags ${{ inputs.docker_username }}/${{ inputs.repository_name }}
-            elif [ ${{ inputs.elastic_container_registry == 'true' }} ]
-            then
-               docker build -t $ACCOUNT.dkr.ecr.$REGION.amazonaws.com/${{ inputs.repository_name }}:${{ inputs.image_tag }} -t $ACCOUNT.dkr.ecr.$REGION.amazonaws.com/${{ inputs.repository_name }}:${{ inputs.image_version }} --build-arg ${{ inputs.build_argument }}=${{ inputs.argument_value }} ${{ inputs.file_location }}
-               aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ACCOUNT.dkr.ecr.$REGION.amazonaws.com
-               docker push --all-tags $ACCOUNT.dkr.ecr.$REGION.amazonaws.com/${{ inputs.repository_name }}
-            fi
+          export REGION=`aws configure get region`
+          export ACCOUNT=`aws sts get-caller-identity --query 'Account' --output text`
+          if [ ${{ inputs.docker_registry == 'true' }} ]
+          then
+              docker build -t ${{ inputs.docker_username }}/${{ inputs.repository_name }}:${{ inputs.image_tag }} -t ${{ inputs.docker_username }}/${{ inputs.repository_name }}:${{ inputs.image_version }} --build-arg ${{ inputs.build_argument }}=${{ inputs.argument_value }} ${{ inputs.file_location }}
+              docker login -u="${{ inputs.docker_username }}"" -p="${{ inputs.docker_passwd }}"
+              docker push --all-tags ${{ inputs.docker_username }}/${{ inputs.repository_name }}
+          elif [ ${{ inputs.elastic_container_registry == 'true' }} ]
+          then
+              docker build -t $ACCOUNT.dkr.ecr.$REGION.amazonaws.com/${{ inputs.repository_name }}:${{ inputs.image_tag }} -t $ACCOUNT.dkr.ecr.$REGION.amazonaws.com/${{ inputs.repository_name }}:${{ inputs.image_version }} --build-arg ${{ inputs.build_argument }}=${{ inputs.argument_value }} ${{ inputs.file_location }}
+              aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ACCOUNT.dkr.ecr.$REGION.amazonaws.com
+              docker push --all-tags $ACCOUNT.dkr.ecr.$REGION.amazonaws.com/${{ inputs.repository_name }}
+          fi
       shell: bash
