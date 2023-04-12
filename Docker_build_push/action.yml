@@ -38,8 +38,7 @@ runs:
   using: "composite"
   steps:
     - name: Docker build actions
-      
-      run: docker build -t ${{ inputs.app_name }}:${{ inputs.image_tag }} -t ${{ inputs.app_name }}:${{ inputs.image_version }} -t ${{ inputs.container_registry }}/${{ inputs.repository_name }} --build-arg ${{ inputs.build_argument }}=${{ inputs.argument_value }} ${{ inputs.file_location }}
+      run: docker build -t ${{ inputs.app_name }}:${{ inputs.image_tag }} -t ${{ inputs.app_name }}:${{ inputs.image_version }} -t ${{ inputs.app_name }}:${{ inputs.container_registry }}/${{ inputs.repository_name }} --build-arg ${{ inputs.build_argument }}=${{ inputs.argument_value }} ${{ inputs.file_location }}
       shell: bash
     - name:  Push image to docker
       run: docker push --all-tags ${{ inputs.container_registry }}/${{ inputs.repository_name }}
