@@ -1,0 +1,56 @@
+name: Lambda deploy action
+description: 'This action is to perform lambda deployment'
+
+inputs:
+ DIR_PATH:
+    description: 'path of folder to be zipped'
+    required: true
+ FUNCTION_NAME:
+    description: 'Name of Lambda Function'
+    required: true
+ BUCKET_NAME:
+    description: 'Name of Bucket'
+    required: true
+ FUNCTION_ZIP_FILE: 
+    description: 'Name of zip file'
+    required: true
+ LAYER_ZIP_FILE: 
+    description: 'Name of zip file'
+    required: true
+ DIR_NAME:
+    description: 'directory in which dependency are installed to get zipped'
+    required: true
+    
+runs:
+  using: "composite"
+  steps:
+      - name: zip the function folder
+        run: zip -r ${{ inputs.FUNCTION_ZIP_FILE }} ${{ inputs.DIR_PATH }}
+        shell: bash
+       
+      - name: Upload function zip file to S3
+        run: aws s3 cp ${{ inputs.ZIP_FILE }} s3://${{ inputs.BUCKET_NAME }}/${{ inputs.FUNCTION_ZIP_FILE }}
+
+      - name: Update lambda function code
+        run: aws lambda update-function-code --function-name ${{ inputs.FUNCTION_NAME }} --s3-bucket ${{ inputs.BUCKET_NAME }} ${{ inputs.FUNCTION_ZIP_FILE }}
+        
+      - name: zip the dependency
+        working-directory: ${{ inputs.DIR_NAME }}
+        run: zip -r ${{ inputs.LAYER_ZIP_FILE }} *
+        
+      - name: upload dependency zip to s3
+        working-directory: ${{ inputs.DIR_NAME }}
+        run: aws s3 cp ${{ inputs.LAYER_ZIP_FILE }} s3://${{ inputs.BUCKET_NAME }}/${{ inputs.LAYER_ZIP_FILE }}
+        
+      - name: Update lambda layer
+        run: |
+          echo "LayerVersionArn=$(aws lambda publish-layer-version --layer-name ${{ inputs.LAYER_NAME }} --content S3Bucket=${{ inputs.BUCKET_NAME }},S3Key=${{ inputs.LAYER_ZIP_FILE }} --query 'LayerVersionArn')" >> $GITHUB_OUTPUT
+        id: layerversion
+     
+      - name: update lambda function layer
+        run: |
+            echo "${{steps.layerversion.outputs.LayerVersionArn}}"
+            aws lambda update-function-configuration --function-name ${{ inputs.FUNCTION_NAME }} --layers "${{steps.layerversion.outputs.LayerVersionArn}}"
+      
+      - name: Test the function
+        run: aws lambda invoke --function-name ${{ inputs.FUNCTION_NAME }} output.json     

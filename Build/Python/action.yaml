@@ -1,0 +1,16 @@
+name: 'Python Build Action'
+description: 'A GitHub Action that builds python'
+inputs:
+  FILENAME:
+     description: 'File to run'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Install Dependencies
+      run: pip install -r requirements.txt
+      shell: bash
+  
+   - name: Run the file
+     run: python3 ${{ inputs.FILENAME }}
+     shell: bash

@@ -1,0 +1,12 @@
+name: 'Node app Start'
+description: 'A GitHub Action that starts the Node Application'
+    
+runs:
+  using: 'composite'
+  steps:
+   - name: Install dependencies
+     run:  npm install 
+     shell: bash
+   - name: start the node app
+     run:  npm start 
+     shell: bash

@@ -1,0 +1,27 @@
+name: EC2 deploy action
+description: 'This action is to perform ec2 deployment'
+
+inputs:
+  INSTANCE_ID:
+    description: 'Instance on which we want to deploy'
+    required: true
+  BUCKET_NAME:
+    description: 'name of the bucket'
+    required: true
+  BUCKET_REGION:
+    description: 'region of the bucket'
+    required: true
+  WORKDIR:
+    description: 'path where you want to run'
+    required: false
+    default: /home/ubuntu
+  FILE:
+    description: 'bash file'
+    required: true
+    
+runs:
+  using: "composite"
+  steps:
+    - name: ec2 deploy actions
+      run: aws ssm send-command --document-name "AWS-RunRemoteScript" --instance-ids "${{ inputs.INSTANCE_ID }}" --parameters '{"sourceType":["S3"],"sourceInfo":["{\"path\":\"https://${{ inputs.BUCKET_NAME }}.s3.${{ inputs.BUCKET_REGION }}.amazonaws.com\"}"],"commandLine":["sudo bash ${{ inputs.FILE }}"],"workingDirectory":["${{ inputs.WORKDIR }}"]}'     
+      shell: bash  
