@@ -53,7 +53,7 @@ runs:
       run: | 
           export REGION=`aws configure get region`
           export ACCOUNT=`aws sts get-caller-identity --query 'Account' --output text`
-          echo $REGION
+          aws configure get region
           echo $ACCOUNT
           if [ ${{ inputs.docker_registry }} == 'true' ];
           then
