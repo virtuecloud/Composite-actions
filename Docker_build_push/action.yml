@@ -51,7 +51,7 @@ runs:
   steps:
     - name: Docker build actions
       run: | 
-          export REGION=`aws configure get region`
+          export REGION=`aws configure get region --output text`
           export ACCOUNT=`aws sts get-caller-identity --query 'Account' --output text`
           aws configure get region
           echo $ACCOUNT
