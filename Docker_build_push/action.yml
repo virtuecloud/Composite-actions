@@ -18,10 +18,10 @@ inputs:
     description: 'File path of Dockerfile'
     required: false
     default: .
-  app_name:
-    description: 'Dockerfile name'
-    required: true
-    default: myapp
+  # app_name:
+  #   description: 'Dockerfile name'
+  #   required: true
+  #   default: myapp
   image_tag:
     description: 'Tag for image to build'
     required: true
