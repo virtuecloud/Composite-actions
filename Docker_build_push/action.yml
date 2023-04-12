@@ -32,7 +32,7 @@ runs:
   using: "composite"
   steps:
     - name: Docker build actions
-      if: ${{ inputs.push == true }}
+      
       run: docker build -t ${{ inputs.image_tag }} -t ${{ inputs.image_version }} -t ${{ inputs.container_registry }}/${{ inputs.repository_name }} --build-arg ${{ inputs.build_argument }}=${{ inputs.argument_value }} ${{ inputs.file_location }}
       shell: bash
     - name:  Push image to docker
