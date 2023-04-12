@@ -11,9 +11,11 @@ inputs:
   docker_registry:
     description: 'toggle for stating docker registry'
     required: false
+    default: false
   elastic_container_registry:
     description: 'toggle for stating docker registry'
     required: false
+    default: false
   file_location:
     description: 'File path of Dockerfile'
     required: false
