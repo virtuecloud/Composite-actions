@@ -1,0 +1,8 @@
+name: 'maven action'
+description: 'Maven'
+
+runs:
+  using: "composite"
+  steps:
+    - run: mvn clean install
+      
