@@ -2,6 +2,18 @@ name: Docker build action
 description: 'This action is to perform docker build command for building image'
 
 inputs:
+  docker_username:
+    description: 'Docker username'
+    required: false
+  docker_passwd:
+    description: 'Docker password'
+    required: false
+  docker_registry:
+    description: 'toggle for stating docker registry'
+    required: false
+  elastic_container_registry:
+    description: 'toggle for stating docker registry'
+    required: false
   file_location:
     description: 'File path of Dockerfile'
     required: false
@@ -21,26 +33,33 @@ inputs:
   build_argument:
     description: 'Build argument key'
     required: false
-    default: npm_token
+    default: dummy_token
   argument_value:
     description: 'Build argument value'
     required: false
-    default: 'dasdsadasd'
-  container_registry:
-    description: 'container registry'
-    default: 'registry.hub.docker.com'
-    required: false
+    default: 'dummy'
+  # container_registry:
+  #   description: 'container registry'
+  #   required: true
   repository_name:
     description: 'Repository name to push image to'
     required: true
-    default: 'test'
 runs:
   using: "composite"
   steps:
     - name: Docker build actions
-      run: docker build -t ${{ inputs.app_name }}:${{ inputs.image_tag }} -t ${{ inputs.app_name }}:${{ inputs.image_version }} -t ${{ inputs.app_name }}:${{ inputs.container_registry }}/${{ inputs.repository_name }} --build-arg ${{ inputs.build_argument }}=${{ inputs.argument_value }} ${{ inputs.file_location }}
+      run: | 
+            export REGION=`aws configure get region`
+            export ACCOUNT=`aws sts get-caller-identity --query 'Account' --output text`
+            if [ ${{ inputs.docker_registry == 'true' }} ]
+            then
+               docker build -t ${{ inputs.docker_username }}/${{ inputs.repository_name }}:${{ inputs.image_tag }} -t ${{ inputs.docker_username }}/${{ inputs.repository_name }}:${{ inputs.image_version }} --build-arg ${{ inputs.build_argument }}=${{ inputs.argument_value }} ${{ inputs.file_location }}
+               docker login -u="${{ inputs.docker_username }}"" -p="${{ inputs.docker_passwd }}"
+               docker push --all-tags ${{ inputs.docker_username }}/${{ inputs.repository_name }}
+            elif [ ${{ inputs.elastic_container_registry == 'true' }} ]
+            then
+               docker build -t $ACCOUNT.dkr.ecr.$REGION.amazonaws.com/${{ inputs.repository_name }}:${{ inputs.image_tag }} -t $ACCOUNT.dkr.ecr.$REGION.amazonaws.com/${{ inputs.repository_name }}:${{ inputs.image_version }} --build-arg ${{ inputs.build_argument }}=${{ inputs.argument_value }} ${{ inputs.file_location }}
+               aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ACCOUNT.dkr.ecr.$REGION.amazonaws.com
+               docker push --all-tags $ACCOUNT.dkr.ecr.$REGION.amazonaws.com/${{ inputs.repository_name }}
+            fi
       shell: bash
-    - name:  Push image to docker
-      run: docker push --all-tags ${{ inputs.container_registry }}/${{ inputs.repository_name }}
-      shell: bash
-    
