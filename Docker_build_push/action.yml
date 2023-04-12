@@ -51,6 +51,8 @@ runs:
       run: | 
           export REGION=`aws configure get region`
           export ACCOUNT=`aws sts get-caller-identity --query 'Account' --output text`
+          echo $REGION
+          echo $ACCOUNT
           if [ ${{ inputs.docker_registry }} == 'true' ];
           then
               docker build -t ${{ inputs.docker_username }}/${{ inputs.repository_name }}:${{ inputs.image_tag }} -t ${{ inputs.docker_username }}/${{ inputs.repository_name }}:${{ inputs.image_version }} --build-arg ${{ inputs.build_argument }}=${{ inputs.argument_value }} ${{ inputs.file_location }}
