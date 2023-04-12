@@ -54,7 +54,7 @@ runs:
           if [ ${{ inputs.docker_registry == 'true' }} ]
           then
               docker build -t ${{ inputs.docker_username }}/${{ inputs.repository_name }}:${{ inputs.image_tag }} -t ${{ inputs.docker_username }}/${{ inputs.repository_name }}:${{ inputs.image_version }} --build-arg ${{ inputs.build_argument }}=${{ inputs.argument_value }} ${{ inputs.file_location }}
-              docker login -u="${{ inputs.docker_username }}"" -p="${{ inputs.docker_passwd }}"
+              docker login -u="${{ inputs.docker_username }}" -p="${{ inputs.docker_passwd }}"
               docker push --all-tags ${{ inputs.docker_username }}/${{ inputs.repository_name }}
           elif [ ${{ inputs.elastic_container_registry == 'true' }} ]
           then
