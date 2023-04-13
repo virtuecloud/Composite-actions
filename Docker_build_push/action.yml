@@ -61,7 +61,7 @@ runs:
           elif [ ${{ inputs.elastic_container_registry }} == true ];
           then
               docker build -t $ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/${{ inputs.repository_name }}:${{ inputs.image_tag }} -t $ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/${{ inputs.repository_name }}:${{ inputs.image_version }} --build-arg ${{ inputs.build_argument }}=${{ inputs.argument_value }} ${{ inputs.file_location }}
-              aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com
+              aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com
               docker push --all-tags $ACCOUNT.dkr.ecr.$AWS_REGION.amazonaws.com/${{ inputs.repository_name }}
           fi
       shell: bash
