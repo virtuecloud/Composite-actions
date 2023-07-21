@@ -1,0 +1,45 @@
+name: EKS deploy action
+description: 'This action is to perform EKS deployment'
+
+    inputs:
+      EKS_CLUSTER_NAME:
+        description: "EKS Cluster Name"
+        required: true
+      EKS_CLUSTER_REGION:
+        description: "EKS Cluster Region"
+        required: true
+      HELM_APP_NAME:
+        description: "Application Name"
+        required: true
+      HELM_APP_DIR:
+        description: "Application Helm Chart Directory"
+        required: true
+      HELM_APP_NAMESPACE:
+        description: "Helm chart installation NameSpace"
+        required: true
+      IMAGE_TAG:
+        description: "Set Image Tag for Web Worker PDF"
+        default: "latest"
+        required: true
+
+env:
+  EKS_CLUSTER_NAME: ${{ github.event.inputs.EKS_CLUSTER_NAME }}
+  EKS_CLUSTER_REGION: ${{ github.event.inputs.EKS_CLUSTER_REGION }}
+  HELM_APP_NAME: ${{ github.event.inputs.HELM_APP_NAME }}
+  HELM_APP_DIR: ${{ github.event.inputs.HELM_APP_DIR }}
+  HELM_APP_NAMESPACE: ${{ github.event.inputs.HELM_APP_NAMESPACE }}
+  IMAGE_TAG: ${{ github.event.inputs.IMAGE_TAG }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Update kubeconfig file
+      id: Update-KubeConfig
+      run: aws eks update-kubeconfig --region $EKS_CLUSTER_REGION --name $EKS_CLUSTER_NAME
+      shell: bash
+    - name: check pods in namespace
+      run: kubectl get pods -n $HELM_APP_NAMESPACE
+      shell: bash
+    - name: Helm Upgrade
+      run: helm upgrade -i $HELM_APP_NAME $HELM_APP_DIR -n $HELM_APP_NAMESPACE
+      shell: bash
